@@ -1,0 +1,12 @@
+var s = "apple\norange\npeach\ngrape\nstrawberry"
+
+writeFile("words2.txt", s)
+
+var s2 = readFile("words2.txt")
+println(s2)
+
+var words = s2.split("\n")
+var name
+foreach(name in words){
+	println("I like " + name + ".")
+}

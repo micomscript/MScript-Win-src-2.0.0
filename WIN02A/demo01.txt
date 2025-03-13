@@ -1,0 +1,11 @@
+var s = readFile("words.txt")
+println(s)
+
+var words = s.split("\n")
+println("type = " + type(words))
+println(words)
+
+var w
+foreach(w in words){
+	println("I like " + w + ".")
+}

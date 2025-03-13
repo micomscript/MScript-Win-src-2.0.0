@@ -1,0 +1,17 @@
+var s, w, words
+var f = open("data.txt", "r")
+var weight, height, bmi, name
+
+if (f){
+	while (s = f.read()){
+		s = s.trim()
+		words = s.split(",")
+
+		name = words[0]
+		weight = float(words[2])
+		height = float(words[1]) * 0.01
+		bmi = weight / (height * height)
+		printf("%8s %5.1f\n", name, bmi)
+	}
+	f.close()
+}

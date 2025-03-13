@@ -1,0 +1,13 @@
+var f = open("colors.txt", "w")
+
+var words = ["white", "black", "orange",
+			 "red", "green", "yellow"]
+var w
+
+if (f){
+	foreach(w in words){
+		println(w)
+		f.write(w + "\n")
+	}
+	f.close()
+}

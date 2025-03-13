@@ -1,0 +1,9 @@
+var s
+var f = open("words.txt", "r")
+
+if (f){
+	while (s = f.read()){
+		print(s)
+	}
+	f.close()
+}

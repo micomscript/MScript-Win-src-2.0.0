@@ -1,0 +1,159 @@
+2024年度　修正履歴
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+■WIN00
+　前年度終了時点からの修正内容
+
+●expression.h
+　オブジェクトを二度deleteするバグを修正
+
+Value *AndSubstitution::evaluate() {
+	Value *v = _vobj->getValue();
+	if(v == NULL) {
+		printf("Error : Please set the initial value of the variable. (line = %d)\n",_line_number);
+		throw ErrorException();
+	}
+	int v_num = v->getInt();
+	Value *value = _e->evaluate();
+	if(value) {
+		int val_num = value->getInt();
+		delete value;
+		_vobj->setValue(new Integer(v_num & val_num));
+	} else
+		return NULL;
+	delete value;		// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	return _vobj->evaluate();
+}
+
+　◆該当個所（５）
+
+	Value *AndSubstitution::evaluate()
+	Value *OrSubstitution::evaluate()
+	Value *ExorSubstitution::evaluate()
+	Value *LShiftSubstitution::evaluate()
+	Value *RShiftSubstitution::evaluate()
+
+●varmap.h  varmap.cpp
+　VMAP_STACK_SIZE を 30 から 103 へ変更した。
+　再帰呼び出し回数の上限を100に変更した。
+
+　また、バグ修正
+	<       if (_curLayer >= VMAP_STACK_SIZE){
+	---
+	>       if (_curLayer >= VMAP_STACK_SIZE - 1){
+
+●tokenizer.h tokenizer.cpp
+　◆字句解析エラー検出時の処理を修正
+　◆setText()を削除（使われていない）
+　◆一行入力処理を修正（バグ修正）
+
+●parser.cpp
+　対話モードで行番号が正しく表示されないバグを修正
+
+●main.cpp
+　Windows版の名前変更
+　（MScript）
+
+●expression.cpp
+　無駄なエラー処理を省いた。
+　各クラスの evaluate() 内部
+
+●function.cpp
+　FuncName::evaluate()
+　関数呼び出し時のパラメータ数チェックを追加
+
+───────────────────────────────────
+■WIN01
+
+●行番号
+　load 実行後に行番号が０に戻ってしまうバグを修正
+
+●tree(式)
+
+	printTree()の修正
+　　全角文字の表示がずれるため、半角文字で表示するように修正
+
+───────────────────────────────────
+■WIN01A（担当：末吉Neo）
+
+● 文字列操作関数[ TEXT.split() ]
+----------------------------------------------------------------------
+・第一引数で指定した文字で文字列を区切り、配列に入れ込んでいく。
+・引数の指定がなければ、空白で区切る。
+・区切り文字が連続で続いた場合は、ひとまとまりで区切る。
+
+◆引数指定なし
+	<Script>
+		var text = "red white green blue"
+		var list = text.split()
+
+	<Response>
+		list => [ "red", "white", "green", "blue" ]
+
+
+◆引数指定あり
+	<Script>
+		var text = "apple,grape,pine,peach"
+		var list = text.split(",")
+
+	<Response>
+		list => [ "apple", "grape", "pine", "peach" ]
+
+
+◆連続区切り文字
+	<Script>
+		var text = "cat,,,dog,bird,,,,,,,,,fish"
+		var list = text.split(",")
+
+	<Response>
+		list => [ "cat", "dog", "bird", "fish" ]
+
+
+
+● 文字列操作関数[ TEXT.find() ]
+----------------------------------------------------------------------
+・第一引数に指定した文字列を、探してその先頭番地を返す。
+・指定文字列が見つからなかった場合、-1を返す。
+・第二引数をint型で指定すると、その番地から文字列探索を始める。
+
+
+
+<Script>
+	var text = "Hello, nice to meet you."
+
+	var num = text.find("nice")
+
+<Response>
+	文字列 : "Hello, nice to meet you."	 
+	番地   :  0123456789
+
+	num => 7
+
+
+
+
+text <= _value
+word <= param1
+
+if text[x] == word[0]
+	if text[x+1] == word[1]
+		if word[2] == \0
+			return x
+
+
+
+● 文字列操作関数[ TEXT.r_find() ]
+----------------------------------------------------------------------
+・第一引数に指定した文字列を、後ろから探してその先頭番地を返す。
+・指定文字列が見つからなかった場合、-1を返す。
+・第二引数をint型で指定すると、その番地から文字列探索を始める。
+
+----------------------------------------------------------------------
+●変更file
+expression.cpp
+
+───────────────────────────────────
+気づいた点
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

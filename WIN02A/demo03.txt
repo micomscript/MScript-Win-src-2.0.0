@@ -1,0 +1,16 @@
+var s = "apple\norange\npeach\n"
+
+writeFile("words.txt", s)
+appendFile("words.txt", "grape\n")
+appendFile("words.txt", "strawberry\n")
+appendFile("words.txt", "blueberry\n")
+appendFile("words.txt", "raspberry\n")
+
+var t = readFile("words.txt")
+println(t)
+
+var words = t.split("\n")
+var name
+foreach(name in words){
+	println("I like " + name + ".")
+}

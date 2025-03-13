@@ -1,0 +1,10 @@
+var s
+var f = open("words.txt", "r")
+
+if (f){
+	while (s = f.read()){
+		s = s.trim()
+		println(s)
+	}
+	f.close()
+}
